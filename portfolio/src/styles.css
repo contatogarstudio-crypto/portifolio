@@ -75,34 +75,6 @@ ol { list-style: none; }
 .about-copy p { font-size: clamp(0.95rem, 1.4vw, 1.1rem); line-height: 1.7; color: #c9cfd0; }
 .about h2 .mask + .mask { margin-left: 0.2em; }
 
-.about-specialties { width: min(100%, 820px); margin-top: 0.35rem; text-align: left; }
-.about-specialties h3 {
-  margin-bottom: 1rem; font-family: var(--body); font-weight: 600;
-  font-size: 0.76rem; letter-spacing: 0.22em; color: #c7a4d9;
-}
-.specialties-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem; }
-.specialty {
-  min-width: 0; display: grid; align-content: center; gap: 0.35rem;
-  padding: 1.2rem 1.35rem; border: 1px solid rgba(216, 185, 233, 0.16);
-  border-radius: 1.15rem;
-  background: linear-gradient(135deg, rgba(171, 62, 212, 0.09), rgba(255, 255, 255, 0.025));
-}
-.specialty-index { font-size: 0.66rem; letter-spacing: 0.13em; color: #bf78d6; }
-.specialty strong { font-size: clamp(0.97rem, 1.5vw, 1.12rem); font-weight: 600; }
-.specialty > span:last-child { font-size: 0.82rem; line-height: 1.4; color: #aeb7bc; }
-@media (max-width: 560px) {
-  .about-specialties { margin-top: 0.2rem; }
-  .about-specialties h3 { font-size: 0.7rem; margin-bottom: 0.85rem; }
-  .specialties-grid { gap: 0.65rem; }
-  .specialty { padding: 1rem 0.85rem; border-radius: 0.9rem; }
-  .specialty strong { font-size: 0.9rem; line-height: 1.25; }
-  .specialty > span:last-child { font-size: 0.72rem; }
-  .about { padding-block: 6.5rem 5.3rem; }
-}
-@media (max-width: 350px) {
-  .specialties-grid { grid-template-columns: 1fr; }
-}
-
 .float { position: absolute; width: clamp(60px, 9vw, 130px); fill: none; stroke: var(--magenta); stroke-width: 3; stroke-linejoin: round; opacity: 0.9; }
 .f1 { top: 12%; left: 8%; } .f2 { bottom: 14%; left: 14%; } .f3 { top: 10%; right: 9%; }
 
