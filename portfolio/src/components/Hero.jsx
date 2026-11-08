@@ -160,8 +160,8 @@ export default function Hero() {
   return (
     <section className="hero" id="inicio" ref={root}>
       <h1>
-        <span className="line"><Words text="OLÁ, SOU" /></span>
-        <span className="line"><Words text="GUILHERME ANSELMO" /></span>
+        <span className="line hero-intro"><Words text="OLÁ, MEU NOME É" /></span>
+        <span className="line hero-name"><Words text="GUILHERME" /></span>
       </h1>
       <div className="hero-photo">
         <div className="tilt">
