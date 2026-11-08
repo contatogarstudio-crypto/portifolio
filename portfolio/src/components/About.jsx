@@ -33,7 +33,7 @@ export default function About() {
       <h2 className="big"><Words text="SOBRE MIM" /></h2>
       <div className="about-copy">
         <p>
-          Sou Guilherme Anselmo, desenvolvedor web e criador da GAR Studio. Gosto de transformar ideias
+          Sou Guilherme Anselmo, desenvolvedor web apaixonado por tecnologia e design. Gosto de transformar ideias
           em experiências digitais que unem identidade visual, tecnologia e facilidade de uso.
         </p>
         <p>
