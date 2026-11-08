@@ -18,5 +18,4 @@ export const projects = [
   { slug: 'barbearia-elite', name: 'Barbearia Elite', tag: 'Cliente', text: 'Site e sistema para a Barbearia Elite.', url: '' },
   { slug: 'dra-helessandra', name: 'Dra. Helessandra', tag: 'Cliente', text: 'Site profissional para a Dra. Helessandra.', url: '' },
   { slug: 'orcaai', name: 'OrçaAI', tag: 'Projeto próprio', text: 'Aplicação web OrçaAI.', url: '' },
-  { slug: 'aratas', name: 'Aratás Estética Automotiva', tag: 'Cliente', text: 'Site para a Aratás Estética Automotiva.', url: '' },
 ]
