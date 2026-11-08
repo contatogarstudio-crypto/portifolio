@@ -16,6 +16,10 @@ export default function About() {
         y: 30, opacity: 0, duration: 0.9, stagger: 0.15, ease: 'power3.out',
         scrollTrigger: { trigger: root.current, start: 'top 45%' },
       })
+      gsap.from('.about-specialties', {
+        y: 28, opacity: 0, duration: 0.9, ease: 'power3.out',
+        scrollTrigger: { trigger: '.about-specialties', start: 'top 88%' },
+      })
       gsap.utils.toArray('.float').forEach((el, i) =>
         gsap.to(el, {
           yPercent: (i % 2 ? -1 : 1) * 60, rotate: (i - 1) * 25, ease: 'none',
@@ -41,6 +45,15 @@ export default function About() {
           e da responsividade ao desenvolvimento e à publicação, buscando criar projetos modernos,
           rápidos e com personalidade. Para mim, cada detalhe importa.
         </p>
+      </div>
+      <div className="about-specialties" aria-labelledby="specialties-heading">
+        <h3 id="specialties-heading">ESPECIALIDADES</h3>
+        <div className="specialties-grid">
+          <div className="specialty"><span className="specialty-index">01 /</span><strong>React &amp; Next.js</strong><span>Interfaces modernas e dinâmicas</span></div>
+          <div className="specialty"><span className="specialty-index">02 /</span><strong>UI/UX responsivo</strong><span>Design pensado para cada tela</span></div>
+          <div className="specialty"><span className="specialty-index">03 /</span><strong>Sistemas web</strong><span>Aplicações e painéis sob medida</span></div>
+          <div className="specialty"><span className="specialty-index">04 /</span><strong>APIs &amp; integrações</strong><span>Serviços e dados conectados</span></div>
+        </div>
       </div>
       <a className="btn" href={contact.href || '#contato'}>FALAR COM O GUILHERME</a>
     </section>
