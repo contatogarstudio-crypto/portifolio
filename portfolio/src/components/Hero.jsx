@@ -27,7 +27,8 @@ export default function Hero() {
   const root = useRef(null)
 
   useLayoutEffect(() => {
-    let onMove, onDown, blink
+    let onMove, onDown, onTouchStart, onTouchMove, onTouchEnd, blink, touchReset, winkReset
+    let touchStart = null
     const ctx = gsap.context(() => {
       // Entrada da primeira tela: títulos, foto, CTA e menu em sequência.
       // fromTo explicita o estado inicial, inclusive após o refresh do Vite.
@@ -78,7 +79,8 @@ export default function Hero() {
       onDown = () => {
         if (!has('piscada')) return
         held = 'piscada'; const back = current(); show('piscada')
-        gsap.delayedCall(0.6, () => { held = null; show(back) })
+        winkReset?.kill()
+        winkReset = gsap.delayedCall(0.6, () => { held = null; show(back) })
       }
       const loop = () => {
         if (!held && has('fechado')) {
@@ -88,15 +90,69 @@ export default function Hero() {
         blink = gsap.delayedCall(gsap.utils.random(3, 6), loop)
       }
       blink = gsap.delayedCall(3, loop)
-      // Evita piscadas e mudanças de olhar disparadas pelo toque ao rolar no celular.
+      // Desktop: os olhos acompanham o mouse e a piscada reage ao clique.
       if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
         window.addEventListener('pointermove', onMove)
         window.addEventListener('pointerdown', onDown)
+      }
+
+      // Celular/tablet: olhos acompanham o dedo; toque curto no rosto faz a careta.
+      // Listeners passivos: não bloqueiam swipe nem a rolagem natural da página.
+      onTouchStart = (e) => {
+        if (e.touches.length !== 1 || e.target.closest('a')) return
+        const finger = e.touches[0]
+        const rect = root.current.querySelector('.hero-photo').getBoundingClientRect()
+        touchStart = {
+          x: finger.clientX,
+          y: finger.clientY,
+          moved: false,
+          overFace: finger.clientX >= rect.left && finger.clientX <= rect.right &&
+                    finger.clientY >= rect.top && finger.clientY <= rect.bottom,
+        }
+        touchReset?.kill()
+        if (!held) show(gazeFrame(finger))
+      }
+
+      onTouchMove = (e) => {
+        if (!touchStart || e.touches.length !== 1) return
+        const finger = e.touches[0]
+        if (Math.hypot(finger.clientX - touchStart.x, finger.clientY - touchStart.y) > 12) {
+          touchStart.moved = true
+        }
+        if (!held) show(gazeFrame(finger))
+      }
+
+      onTouchEnd = () => {
+        if (!touchStart) return
+        const tappedFace = touchStart.overFace && !touchStart.moved
+        touchStart = null
+        if (tappedFace) {
+          onDown()
+        } else {
+          touchReset?.kill()
+          touchReset = gsap.delayedCall(0.35, () => {
+            if (!held) show(has('baixo') ? 'baixo' : 'esquerda')
+          })
+        }
+      }
+
+      if (window.matchMedia('(pointer: coarse)').matches) {
+        root.current.addEventListener('touchstart', onTouchStart, { passive: true })
+        root.current.addEventListener('touchmove', onTouchMove, { passive: true })
+        root.current.addEventListener('touchend', onTouchEnd, { passive: true })
+        root.current.addEventListener('touchcancel', onTouchEnd, { passive: true })
       }
     }, root)
     return () => {
       window.removeEventListener('pointermove', onMove)
       window.removeEventListener('pointerdown', onDown)
+      root.current?.removeEventListener('touchstart', onTouchStart)
+      root.current?.removeEventListener('touchmove', onTouchMove)
+      root.current?.removeEventListener('touchend', onTouchEnd)
+      root.current?.removeEventListener('touchcancel', onTouchEnd)
+      blink?.kill()
+      touchReset?.kill()
+      winkReset?.kill()
       ctx.revert()
     }
   }, [])
