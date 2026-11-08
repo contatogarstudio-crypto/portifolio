@@ -12,7 +12,7 @@ const gaze = [
   ['cima-esquerda', -1, -1], ['cima-direita', 1, -1], ['baixo-esquerda', -1, 1], ['baixo-direita', 1, 1],
 ]
 const extras = ['fechado', 'piscada'] // olhos fechados (pisca sozinho) e careta de piscada (clique)
-const all = [...gaze.map((g) => g[0]), ...extras]
+const all = [...gaze.map((g) => g[0]).filter((name) => name !== 'centro' && name !== 'baixo-direita'), ...extras]
 
 // Quadro inicial: "centro" se existir; senão "baixo"; senão o primeiro que carregar.
 const rank = (n) => { const i = ['centro', 'baixo'].indexOf(n); return i < 0 ? 9 : i }
@@ -30,6 +30,7 @@ export default function Hero() {
     let onMove, onDown, onTouchStart, onTouchMove, onTouchEnd, blink, touchReset, winkReset
     let touchStart = null
     const ctx = gsap.context(() => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
       // Entrada da primeira tela: títulos, foto, CTA e menu em sequência.
       // fromTo explicita o estado inicial, inclusive após o refresh do Vite.
       const tl = gsap.timeline({ defaults: { ease: 'power4.out' } })
@@ -49,8 +50,6 @@ export default function Hero() {
         scale: 1.05, ease: 'none',
         scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true },
       })
-
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
       const img = (n) => root.current.querySelector(`img[data-f="${n}"]`)
       const has = (n) => { const e = img(n); return !!e && e.complete && e.naturalWidth > 0 }
@@ -166,7 +165,7 @@ export default function Hero() {
       <div className="hero-photo">
         <div className="tilt">
           {all.map((f) => (
-            <img key={f} data-f={f} onLoad={firstFrame} src={`/foto-${f}.webp`} alt={f === 'centro' ? 'Guilherme Anselmo' : ''} />
+            <img key={f} data-f={f} onLoad={firstFrame} src={`/foto-${f}.webp`} alt={f === 'baixo' ? 'Personagem 3D de Guilherme Anselmo' : ''} width="900" height="774" decoding="async" fetchPriority={f === 'baixo' ? 'high' : 'low'} />
           ))}
         </div>
       </div>

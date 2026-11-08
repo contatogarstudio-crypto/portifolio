@@ -10,7 +10,7 @@ function Screen({ src, name }) {
   return (
     <div className="screen">
       <span className="screen-fallback">{name}</span>
-      <img src={src} alt={`Captura de tela de ${name}`} loading="lazy" onError={hideBroken} />
+      <img src={src} alt={`Captura de tela de ${name}`} loading="lazy" decoding="async" onError={hideBroken} />
     </div>
   )
 }
@@ -21,6 +21,7 @@ export default function Projects() {
   useLayoutEffect(() => {
     const mm = gsap.matchMedia()
     const ctx = gsap.context(() => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
       gsap.from('.projects-title .word', {
         yPercent: 115, duration: 1, stagger: 0.1, ease: 'power4.out',
         scrollTrigger: { trigger: '.projects-title', start: 'top 80%' },
@@ -96,6 +97,7 @@ export default function Projects() {
             <a
               className={`btn ${p.url ? '' : 'disabled'}`}
               href={p.url || undefined}
+              aria-label={p.url ? `Abrir site de ${p.name} em outra aba` : `Link de ${p.name} indisponível`}
               target="_blank"
               rel="noreferrer noopener"
               aria-disabled={!p.url}

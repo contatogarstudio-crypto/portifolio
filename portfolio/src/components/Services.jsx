@@ -8,6 +8,7 @@ export default function Services() {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
       gsap.from('.services h2 .word', {
         yPercent: 115, duration: 1, stagger: 0.1, ease: 'power4.out',
         scrollTrigger: { trigger: root.current, start: 'top 55%' },

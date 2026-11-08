@@ -1,6 +1,7 @@
 const go = (id) => (e) => {
   e.preventDefault()
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  document.getElementById(id)?.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' })
 }
 
 export default function Nav() {

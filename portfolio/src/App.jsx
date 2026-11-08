@@ -20,8 +20,9 @@ export default function App() {
 
   return (
     <>
+      <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
       <Nav />
-      <main>
+      <main id="conteudo">
         <Hero />
         <About />
         <Services />
