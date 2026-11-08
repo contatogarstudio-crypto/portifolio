@@ -1,36 +1,48 @@
 /* Compact ambient-audio controls — discreet Liquid Glass on mobile and desktop. */
 .ambient-audio {
   position: fixed;
-  right: calc(14px + env(safe-area-inset-right, 0px));
-  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  right: calc(10px + env(safe-area-inset-right, 0px));
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
   z-index: 60;
   font-family: inherit;
 }
 
 .ambient-audio-button {
+  position: relative;
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   padding: 0;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 0;
   border-radius: 50%;
-  color: rgba(255, 255, 255, 0.88);
-  background: rgba(40, 32, 51, 0.38);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 5px 18px rgba(0, 0, 0, 0.13);
-  -webkit-backdrop-filter: blur(18px) saturate(130%);
-  backdrop-filter: blur(18px) saturate(130%);
+  color: rgba(255, 255, 255, 0.82);
+  background: transparent;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-  transition: background 180ms ease, transform 180ms ease, border-color 180ms ease;
+  transition: color 180ms ease, transform 180ms ease;
 }
-.ambient-audio-button svg { width: 18px; height: 18px; }
-.ambient-audio-button:hover, .ambient-audio-button[aria-expanded='true'] {
-  background: rgba(75, 55, 92, 0.56);
-  border-color: rgba(255, 255, 255, 0.42);
+/* Glass circle occupies only 32px; touch target remains comfortable (44px). */
+.ambient-audio-button::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+  background: rgba(37, 29, 47, 0.27);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.17), 0 2px 8px rgba(0, 0, 0, 0.10);
+  -webkit-backdrop-filter: blur(14px) saturate(115%);
+  backdrop-filter: blur(14px) saturate(115%);
+  transition: background 180ms ease, border-color 180ms ease;
 }
-.ambient-audio-button:hover { transform: translateY(-1px); }
+.ambient-audio-button svg { position: relative; width: 15px; height: 15px; }
+.ambient-audio-button:hover::before,
+.ambient-audio-button[aria-expanded='true']::before {
+  background: rgba(52, 39, 65, 0.48);
+  border-color: rgba(255, 255, 255, 0.29);
+}
+.ambient-audio-button:hover { color: #fff; }
 .ambient-audio-button:active { transform: scale(0.96); }
 .ambient-audio-button:focus-visible,
 .ambient-audio-toggle:focus-visible,
