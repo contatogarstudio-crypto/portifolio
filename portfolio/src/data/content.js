@@ -14,8 +14,8 @@ export const services = [
 // Coloque os prints reais em public/projects/<slug>-desktop.png e <slug>-mobile.png
 // e preencha "url" com o endereço do site no ar.
 export const projects = [
-  { slug: 'zelao-dog', name: 'Zelão Dog', tag: 'Cliente', text: 'Site desenvolvido para o Zelão Dog.', url: '' },
-  { slug: 'barbearia-elite', name: 'Barbearia Elite', tag: 'Cliente', text: 'Site e sistema para a Barbearia Elite.', url: '' },
-  { slug: 'dra-helessandra', name: 'Dra. Helessandra', tag: 'Cliente', text: 'Site profissional para a Dra. Helessandra.', url: '' },
-  { slug: 'orcaai', name: 'OrçaAI', tag: 'Projeto próprio', text: 'Aplicação web OrçaAI.', url: '' },
+  { slug: 'zelao-dog', name: 'Zelão Dog', tag: 'Cliente', text: 'Site desenvolvido para o Zelão Dog.', url: 'https://zelaodog.com.br' },
+  { slug: 'barbearia-elite', name: 'Barbearia Elite', tag: 'Cliente', text: 'Site e sistema para a Barbearia Elite.', url: 'https://barbeariaelite1.vercel.app' },
+  { slug: 'dra-helessandra', name: 'Dra. Helessandra', tag: 'Cliente', text: 'Site profissional para a Dra. Helessandra.', url: 'https://dentistaprototipo.vercel.app' },
+  { slug: 'orcaai', name: 'OrçaAI', tag: 'Projeto próprio', text: 'Aplicação web OrçaAI.', url: 'https://orcaai-gold.vercel.app' },
 ]
