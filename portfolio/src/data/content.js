@@ -1,7 +1,6 @@
 // Edite aqui textos, links e contato.
 export const contact = {
-  // Preencha com seu WhatsApp (ex.: https://wa.me/55...) ou e-mail (mailto:...)
-  href: '',
+  href: 'https://wa.me/5511983897886?text=Ol%C3%A1%2C%20Guilherme!%20Vi%20seu%20portf%C3%B3lio%20e%20gostaria%20de%20conversar%20sobre%20um%20projeto.',
 }
 
 export const services = [
