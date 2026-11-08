@@ -6,6 +6,7 @@ import Hero from './components/Hero.jsx'
 import About from './components/About.jsx'
 import Services from './components/Services.jsx'
 import Projects from './components/Projects.jsx'
+import AmbientAudio from './components/AmbientAudio.jsx'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -27,6 +28,7 @@ export default function App() {
         <Services />
         <Projects />
       </main>
+      <AmbientAudio />
     </>
   )
 }
