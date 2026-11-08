@@ -19,41 +19,55 @@ export default function Projects() {
   const root = useRef(null)
 
   useLayoutEffect(() => {
+    const mm = gsap.matchMedia()
     const ctx = gsap.context(() => {
       gsap.from('.projects-title .word', {
         yPercent: 115, duration: 1, stagger: 0.1, ease: 'power4.out',
         scrollTrigger: { trigger: '.projects-title', start: 'top 80%' },
       })
 
-      const mm = gsap.matchMedia()
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
+      // Em telas grandes, mantém o pin cinematográfico original.
+      mm.add('(min-width: 901px) and (min-height: 720px) and (prefers-reduced-motion: no-preference)', () => {
         gsap.utils.toArray('.proj').forEach((el) => {
           const q = gsap.utils.selector(el)
-          const tl = gsap.timeline({
+          gsap.timeline({
             defaults: { ease: 'none' },
             scrollTrigger: { trigger: el, start: 'top top', end: '+=160%', pin: true, scrub: 1 },
           })
-          // 1) notebook entra com perspectiva e profundidade; textos acompanham
-          tl.fromTo(q('.laptop'),
-            { rotateX: 58, rotateY: -28, yPercent: 30, scale: 0.55, opacity: 0 },
-            { rotateX: 6, rotateY: -10, yPercent: 0, scale: 1, opacity: 1, duration: 1 }, 0)
-            .fromTo(q('.meta > *'), { y: 50, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.12, duration: 0.6 }, 0.35)
-            // 2) celular vem de trás, passa à frente do notebook
+            .fromTo(q('.laptop'),
+              { rotateX: 58, rotateY: -28, yPercent: 30, scale: 0.55, opacity: 0 },
+              { rotateX: 6, rotateY: -10, yPercent: 0, scale: 1, opacity: 1, duration: 1 }, 0)
+            .fromTo(q('.meta > *'), { y: 50, opacity: 0 },
+              { y: 0, opacity: 1, stagger: 0.12, duration: 0.6 }, 0.35)
             .fromTo(q('.phone'),
               { xPercent: 120, z: -400, rotateY: 55, rotateZ: 8, yPercent: 30, opacity: 0 },
               { xPercent: 0, z: 140, rotateY: -14, rotateZ: 0, yPercent: 0, opacity: 1, duration: 1 }, 0.9)
-            // 3) respiro final: leve giro dos dois dispositivos antes de sair
             .to(q('.laptop'), { rotateY: 6, scale: 1.04, duration: 0.8 }, 1.9)
             .to(q('.phone'), { rotateY: -4, z: 200, duration: 0.8 }, 1.9)
-            .to(q('.scene'), { opacity: 0.0, yPercent: -12, duration: 0.5 }, 2.7)
+            .to(q('.scene'), { opacity: 0, yPercent: -12, duration: 0.5 }, 2.7)
             .to(q('.meta'), { opacity: 0, duration: 0.4 }, 2.8)
         })
       })
-      mm.add('(prefers-reduced-motion: reduce)', () => {
-        gsap.set('.laptop, .phone, .meta > *', { clearProps: 'all' })
+
+      // No celular/tablet, notebook e celular surgem durante o scroll,
+      // sem prender a página ou sobrepor a seção seguinte.
+      mm.add('(max-width: 900px) and (prefers-reduced-motion: no-preference), (max-height: 719px) and (prefers-reduced-motion: no-preference)', () => {
+        gsap.utils.toArray('.proj').forEach((el) => {
+          const q = gsap.utils.selector(el)
+          gsap.timeline({
+            defaults: { ease: 'power2.out' },
+            scrollTrigger: { trigger: el, start: 'top 85%', end: 'top 18%', scrub: 0.65 },
+          })
+            .fromTo(q('.laptop'),
+              { autoAlpha: 0, y: 65, rotateY: -18, scale: 0.82 },
+              { autoAlpha: 1, y: 0, rotateY: -5, scale: 1, duration: 1 }, 0)
+            .fromTo(q('.phone'),
+              { autoAlpha: 0, x: 50, y: 65, rotateY: 30, scale: 0.75 },
+              { autoAlpha: 1, x: 0, y: 0, rotateY: -6, scale: 1, duration: 0.9 }, 0.3)
+        })
       })
     }, root)
-    return () => ctx.revert()
+    return () => { mm.revert(); ctx.revert() }
   }, [])
 
   return (

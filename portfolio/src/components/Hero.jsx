@@ -78,8 +78,11 @@ export default function Hero() {
         blink = gsap.delayedCall(gsap.utils.random(3, 6), loop)
       }
       blink = gsap.delayedCall(3, loop)
-      window.addEventListener('pointermove', onMove)
-      window.addEventListener('pointerdown', onDown)
+      // Evita piscadas e mudanças de olhar disparadas pelo toque ao rolar no celular.
+      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        window.addEventListener('pointermove', onMove)
+        window.addEventListener('pointerdown', onDown)
+      }
     }, root)
     return () => {
       window.removeEventListener('pointermove', onMove)
