@@ -29,11 +29,21 @@ export default function Hero() {
   useLayoutEffect(() => {
     let onMove, onDown, blink
     const ctx = gsap.context(() => {
+      // Entrada da primeira tela: títulos, foto, CTA e menu em sequência.
+      // fromTo explicita o estado inicial, inclusive após o refresh do Vite.
       const tl = gsap.timeline({ defaults: { ease: 'power4.out' } })
-      tl.from('.hero .word', { yPercent: 115, duration: 1.1, stagger: 0.12 })
-        .from('.tilt', { yPercent: 40, opacity: 0, scale: 0.92, duration: 1.3 }, 0.5)
-        .from('.hero-tag, .hero .btn', { y: 24, opacity: 0, duration: 0.9, stagger: 0.15 }, 1.1)
-        .from('.nav a', { y: -20, opacity: 0, stagger: 0.08, duration: 0.7 }, 0.9)
+      tl.fromTo('.hero .word',
+        { yPercent: 115 },
+        { yPercent: 0, duration: 1.1, stagger: 0.12 }, 0)
+        .fromTo('.tilt',
+          { yPercent: 40, opacity: 0, scale: 0.92 },
+          { yPercent: 0, opacity: 1, scale: 1, duration: 1.3 }, 0.5)
+        .fromTo('.hero-tag, .hero .btn',
+          { y: 24, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.9, stagger: 0.15 }, 1.1)
+        .fromTo(document.querySelectorAll('.nav a'),
+          { y: -20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.7, stagger: 0.08 }, 0.9)
       gsap.to('.hero-photo', {
         scale: 1.05, ease: 'none',
         scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true },

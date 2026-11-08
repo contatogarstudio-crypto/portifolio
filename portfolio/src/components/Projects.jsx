@@ -49,21 +49,33 @@ export default function Projects() {
         })
       })
 
-      // No celular/tablet, notebook e celular surgem durante o scroll,
-      // sem prender a página ou sobrepor a seção seguinte.
+      // Restaura a entrada 3D original no celular e no tablet.
+      // Sem pin: o scroll continua natural, mas o notebook e o celular
+      // entram em perspectiva e em momentos diferentes.
       mm.add('(max-width: 900px) and (prefers-reduced-motion: no-preference), (max-height: 719px) and (prefers-reduced-motion: no-preference)', () => {
         gsap.utils.toArray('.proj').forEach((el) => {
           const q = gsap.utils.selector(el)
           gsap.timeline({
-            defaults: { ease: 'power2.out' },
-            scrollTrigger: { trigger: el, start: 'top 85%', end: 'top 18%', scrub: 0.65 },
+            defaults: { ease: 'none' },
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 90%',
+              end: 'top 12%',
+              scrub: 0.7,
+              invalidateOnRefresh: true,
+            },
           })
             .fromTo(q('.laptop'),
-              { autoAlpha: 0, y: 65, rotateY: -18, scale: 0.82 },
-              { autoAlpha: 1, y: 0, rotateY: -5, scale: 1, duration: 1 }, 0)
+              { rotateX: 58, rotateY: -28, yPercent: 30, scale: 0.55, opacity: 0 },
+              { rotateX: 6, rotateY: -10, yPercent: 0, scale: 1, opacity: 1, duration: 1 }, 0)
+            .fromTo(q('.meta > *'),
+              { y: 40, opacity: 0 },
+              { y: 0, opacity: 1, stagger: 0.12, duration: 0.6 }, 0.2)
             .fromTo(q('.phone'),
-              { autoAlpha: 0, x: 50, y: 65, rotateY: 30, scale: 0.75 },
-              { autoAlpha: 1, x: 0, y: 0, rotateY: -6, scale: 1, duration: 0.9 }, 0.3)
+              { xPercent: 120, z: -240, rotateY: 55, rotateZ: 8, yPercent: 30, opacity: 0 },
+              { xPercent: 0, z: 100, rotateY: -14, rotateZ: 0, yPercent: 0, opacity: 1, duration: 1 }, 0.8)
+            .to(q('.laptop'), { rotateY: 6, scale: 1.03, duration: 0.4 }, 1.65)
+            .to(q('.phone'), { rotateY: -4, z: 130, duration: 0.4 }, 1.65)
         })
       })
     }, root)
