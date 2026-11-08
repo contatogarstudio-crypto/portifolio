@@ -39,7 +39,7 @@ export default function Hero() {
         .fromTo('.tilt',
           { yPercent: 40, opacity: 0, scale: 0.92 },
           { yPercent: 0, opacity: 1, scale: 1, duration: 1.3 }, 0.5)
-        .fromTo('.hero-tag, .hero .btn',
+        .fromTo('.hero .btn',
           { y: 24, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.9, stagger: 0.15 }, 1.1)
         .fromTo(document.querySelectorAll('.nav a'),
@@ -170,7 +170,6 @@ export default function Hero() {
           ))}
         </div>
       </div>
-      <p className="hero-tag">Criando sites e sistemas web de alto impacto, com design forte e código limpo.</p>
       <a className="btn" href={contact.href || '#contato'}>FALE COMIGO</a>
     </section>
   )

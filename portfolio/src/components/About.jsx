@@ -31,10 +31,17 @@ export default function About() {
       <svg className="float f2" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="38" /><circle cx="37" cy="42" r="4" /><circle cx="63" cy="42" r="4" /><path d="M30 60q20 22 40 0" /></svg>
       <svg className="float f3" viewBox="0 0 100 100" aria-hidden="true"><path d="M20 10l60 38-26 6 16 30-14 8-16-30-20 18z" /></svg>
       <h2 className="big"><Words text="SOBRE MIM" /></h2>
-      <p>
-        Sou desenvolvedor web e trabalho com sites, landing pages e sistemas sob medida. Cuido do design,
-        do código e do desempenho para que a sua marca apareça bem em qualquer tela. Vamos construir algo incrível juntos.
-      </p>
+      <div className="about-copy">
+        <p>
+          Sou Guilherme Anselmo, desenvolvedor web e criador da GAR Studio. Gosto de transformar ideias
+          em experiências digitais que unem identidade visual, tecnologia e facilidade de uso.
+        </p>
+        <p>
+          Trabalho com sites, landing pages e sistemas personalizados. Cuido de cada etapa, do design
+          e da responsividade ao desenvolvimento e à publicação, buscando criar projetos modernos,
+          rápidos e com personalidade. Para mim, cada detalhe importa.
+        </p>
+      </div>
       <a className="btn" href={contact.href || '#contato'}>FALAR COM O GUILHERME</a>
     </section>
   )
