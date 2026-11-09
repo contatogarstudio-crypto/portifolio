@@ -31,7 +31,7 @@ ol { list-style: none; }
 :focus-visible { outline: 2px solid var(--magenta); outline-offset: 4px; }
 
 .mask { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.06em; }
-.word { display: inline-block; will-change: transform; }
+.word { display: inline-block; }
 
 .big {
   font-family: var(--display);
@@ -91,8 +91,8 @@ ol { list-style: none; }
 .hero h1 .hero-name { font-size: clamp(3.75rem, 11vw, 12rem); line-height: 0.98; }
 .hero-photo { position: absolute; z-index: 2; bottom: 0; left: 50%; translate: -50% 0; width: min(94vw, 88vh); perspective: 1200px; pointer-events: none; }
 .tilt { display: grid; }
-.tilt img { grid-area: 1 / 1; width: 100%; height: auto; display: block; opacity: 0; filter: drop-shadow(0 20px 40px #000a); }
-.tilt img.on { opacity: 1; }
+.tilt img { grid-area: 1 / 1; width: 100%; height: auto; display: block; opacity: 0; }
+.tilt img.on { opacity: 1; filter: drop-shadow(0 20px 40px #000a); }
 .hero .btn { position: absolute; z-index: 3; right: 2rem; bottom: 2rem; }
 
 /* SOBRE */
@@ -353,4 +353,21 @@ section[id], footer[id] { scroll-margin-top: 4.5rem; }
 .tilt img {
   -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+}
+
+/* Ajuste automático para computadores modestos: 3D completo em dispositivos
+   potentes, entradas leves e navegação natural em hardware limitado. */
+html.lite-motion .proj {
+  height: auto;
+  min-height: min(850px, 100svh);
+  overflow: visible;
+  padding-top: clamp(4rem, 8svh, 7rem);
+  padding-bottom: clamp(3rem, 6svh, 5rem);
+}
+html.lite-motion .scene { perspective: none; }
+html.lite-motion .laptop,
+html.lite-motion .phone { transform-style: flat; will-change: auto; }
+html.lite-motion .tilt img.on { filter: none; }
+@media (max-width: 560px) {
+  html.lite-motion .proj { min-height: 0; padding: 4rem 1rem 3.5rem; }
 }

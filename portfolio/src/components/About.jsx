@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import Words from './Words.jsx'
 import { contact } from '../data/content.js'
+import { isLiteMotionDevice } from '../utils/motion.js'
 
 export default function About() {
   const root = useRef(null)
@@ -17,11 +18,13 @@ export default function About() {
         y: 30, opacity: 0, duration: 0.9, stagger: 0.15, ease: 'power3.out',
         scrollTrigger: { trigger: root.current, start: 'top 45%' },
       })
-      gsap.utils.toArray('.float').forEach((el, i) =>
-        gsap.to(el, {
-          yPercent: (i % 2 ? -1 : 1) * 60, rotate: (i - 1) * 25, ease: 'none',
-          scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom top', scrub: true },
-        }))
+      if (!isLiteMotionDevice()) {
+        gsap.utils.toArray('.float').forEach((el, i) =>
+          gsap.to(el, {
+            yPercent: (i % 2 ? -1 : 1) * 60, rotate: (i - 1) * 25, ease: 'none',
+            scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom top', scrub: true },
+          }))
+      }
     }, root)
     return () => ctx.revert()
   }, [])

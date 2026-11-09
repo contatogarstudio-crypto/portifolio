@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import Words from './Words.jsx'
 import { contact } from '../data/content.js'
+import { isLiteMotionDevice } from '../utils/motion.js'
 
 // Quadros do avatar: a cabeça e o corpo são IDÊNTICOS em todos, só o olhar muda.
 // Arquivos em public/foto-<nome>.webp. Os que não existirem são ignorados.
@@ -28,9 +29,11 @@ export default function Hero() {
 
   useLayoutEffect(() => {
     let onMove, onDown, onTouchStart, onTouchMove, onTouchEnd, blink, touchReset, winkReset
+    let cursorRaf = 0
     let touchStart = null
     const ctx = gsap.context(() => {
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+      const lite = isLiteMotionDevice()
       // Entrada da primeira tela: títulos, foto, CTA e menu em sequência.
       // fromTo explicita o estado inicial, inclusive após o refresh do Vite.
       const tl = gsap.timeline({ defaults: { ease: 'power4.out' } })
@@ -46,10 +49,13 @@ export default function Hero() {
         .fromTo(document.querySelectorAll('.nav a'),
           { y: -20, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.7, stagger: 0.08 }, 0.9)
-      gsap.to('.hero-photo', {
-        scale: 1.05, ease: 'none',
-        scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true },
-      })
+      // Evita uma animação vinculada ao scroll em máquinas com pouca GPU/CPU.
+      if (!lite) {
+        gsap.to('.hero-photo', {
+          scale: 1.05, ease: 'none',
+          scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true },
+        })
+      }
 
       const img = (n) => root.current.querySelector(`img[data-f="${n}"]`)
       const has = (n) => { const e = img(n); return !!e && e.complete && e.naturalWidth > 0 }
@@ -74,7 +80,15 @@ export default function Hero() {
         })
         return best
       }
-      onMove = (e) => { if (!held) show(gazeFrame(e)) }
+      // Apenas uma atualização por quadro, mesmo com mouses de alta frequência.
+      onMove = (e) => {
+        if (held || cursorRaf) return
+        const { clientX, clientY } = e
+        cursorRaf = window.requestAnimationFrame(() => {
+          cursorRaf = 0
+          if (!held) show(gazeFrame({ clientX, clientY }))
+        })
+      }
       onDown = () => {
         if (!has('piscada')) return
         held = 'piscada'; const back = current(); show('piscada')
@@ -149,6 +163,7 @@ export default function Hero() {
       root.current?.removeEventListener('touchmove', onTouchMove)
       root.current?.removeEventListener('touchend', onTouchEnd)
       root.current?.removeEventListener('touchcancel', onTouchEnd)
+      if (cursorRaf) window.cancelAnimationFrame(cursorRaf)
       blink?.kill()
       touchReset?.kill()
       winkReset?.kill()

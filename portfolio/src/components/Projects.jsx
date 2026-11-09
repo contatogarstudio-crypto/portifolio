@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import Words from './Words.jsx'
 import { projects, contact } from '../data/content.js'
+import { isLiteMotionDevice } from '../utils/motion.js'
 
 // Se a captura real ainda não existir, mostra só o nome do projeto (sem interface inventada).
 const hideBroken = (e) => { e.currentTarget.style.display = 'none' }
@@ -20,12 +21,31 @@ export default function Projects() {
 
   useLayoutEffect(() => {
     const mm = gsap.matchMedia()
+    const lite = isLiteMotionDevice()
+    document.documentElement.classList.toggle('lite-motion', lite)
     const ctx = gsap.context(() => {
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
       gsap.from('.projects-title .word', {
         yPercent: 115, duration: 1, stagger: 0.1, ease: 'power4.out',
         scrollTrigger: { trigger: '.projects-title', start: 'top 80%' },
       })
+
+      // Em dispositivos modestos, preserva entradas suaves sem fixar seções
+      // nem recalcular transformações 3D pesadas a cada pixel rolado.
+      if (lite) {
+        gsap.utils.toArray('.proj').forEach((el) => {
+          const q = gsap.utils.selector(el)
+          gsap.from(q('.meta > *'), {
+            y: 22, opacity: 0, duration: 0.65, stagger: 0.06, ease: 'power2.out',
+            scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+          })
+          gsap.from(q('.scene'), {
+            y: 36, scale: 0.97, opacity: 0, duration: 0.8, ease: 'power2.out',
+            scrollTrigger: { trigger: el, start: 'top 83%', once: true },
+          })
+        })
+        return
+      }
 
       // Em telas grandes, mantém o pin cinematográfico original.
       mm.add('(min-width: 901px) and (min-height: 720px) and (prefers-reduced-motion: no-preference)', () => {
@@ -80,7 +100,7 @@ export default function Projects() {
         })
       })
     }, root)
-    return () => { mm.revert(); ctx.revert() }
+    return () => { mm.revert(); ctx.revert(); document.documentElement.classList.remove('lite-motion') }
   }, [])
 
   return (
